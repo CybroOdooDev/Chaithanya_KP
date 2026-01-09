@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    Inherited to add domain to package_carrier_type -->
+    <record id="choose_delivery_package_view_form" model="ir.ui.view">
+        <field name="name">
+            choose.delivery.package.view.form.inherit.easypost.odoo.connector
+        </field>
+        <field name="model">choose.delivery.package</field>
+        <field name="inherit_id"
+               ref="stock_delivery.choose_delivery_package_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='delivery_package_type_id']"
+                   position="replace">
+                <field name="delivery_package_type_id"
+                       domain="[('package_carrier_type', '=', context.get('current_package_carrier_type', 'none'))]"
+                       context="{'form_view_ref': 'stock.stock_package_type_form'}"
+                       invisible ="package_carrier_type == 'easypost'"/>
+                <field name="delivery_package_type_id"
+                       domain="[('package_carrier_type', '=', context.get('current_package_carrier_type', 'none')), ('carrier', '=', context.get('easypost_carrier', 'none'))]"
+                       invisible="package_carrier_type != 'easypost'"/>
+                <field name="package_carrier_type" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

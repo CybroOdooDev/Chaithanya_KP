@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--         Delivery Partner tree view-->
+    <record id="delivery_partner_view_tree" model="ir.ui.view">
+        <field name="name">delivery.partner.view.tree</field>
+        <field name="model">delivery.partner</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <!--         Delivery Partner form view-->
+    <record id="delivery_partner_view_form" model="ir.ui.view">
+        <field name="name">delivery.partner.view.form</field>
+        <field name="model">delivery.partner</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" string="Name"/>
+                        <field name="api_key" password="True" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+     <!--    Delivery Partner menu action-->
+    <record id="delivery_partner_action" model="ir.actions.act_window">
+        <field name="name">Delivery Partner</field>
+        <field name="res_model">delivery.partner</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <!--    Delivery Partner menu-->
+    <menuitem
+            id="delivery_partner_menu"
+            name="Delivery Partner"
+            sequence="9"
+            parent="sale.menu_sales_config"
+            action="delivery_partner_action"
+    />
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Easypost label tree view-->
+    <record id="easypost_label_view_tree" model="ir.ui.view">
+        <field name="name">easypost.label.view.tree</field>
+        <field name="model">easypost.label</field>
+        <field name="arch" type="xml">
+            <list string="Easypost Labels">
+                <field name="tracking_ref"/>
+                <button name="action_download_label" string="Label" type="object" icon="fa-download"/>
+                <button name="action_track_shipment" string="Track Shipment" type="object" icon="fa-truck"/>
+            </list>
+        </field>
+    </record>
+</odoo>

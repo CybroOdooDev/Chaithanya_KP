@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_easypost_carrier_user,access.easypost.carrier.user,model_easypost_carrier,base.group_user,1,1,1,1
+access_easypost_package_user,access.easypost.package.user,model_easypost_package,base.group_user,1,1,1,1
+access_easypost_label_user,access.easypost.label.user,model_easypost_label,base.group_user,1,1,1,1
