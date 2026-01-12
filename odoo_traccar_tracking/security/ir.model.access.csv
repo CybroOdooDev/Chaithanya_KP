@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_odoo_traccar_tracking_user,access.odoo.traccar.tracking.user,model_odoo_traccar_tracking,base.group_user,1,1,1,1
+access_fleet_vehicle,access_fleet_vehicle,model_fleet_vehicle,base.group_user,1,1,1,1
+access_res_config_settings,access_res_config_settings,model_res_config_settings,base.group_user,1,1,1,1
+access_traccar_device,access_traccar_device,model_traccar_device,base.group_user,1,1,1,1
+access_traccar_position,access_traccar_position,model_traccar_position,base.group_user,1,1,1,1

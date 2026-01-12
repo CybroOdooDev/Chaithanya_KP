@@ -1,0 +1,42 @@
+<odoo>
+    <record id="view_traccar_device_tree" model="ir.ui.view">
+        <field name="name">traccar.device.tree</field>
+        <field name="model">traccar.device</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="traccar_id"/>
+                <field name="vehicle_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_traccar_device_form" model="ir.ui.view">
+        <field name="name">traccar.device.form</field>
+        <field name="model">traccar.device</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_sync_devices"
+                            string="Sync Devices"
+                            type="object"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="traccar_id"/>
+                        <field name="unique_id"/>
+                        <field name="vehicle_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_traccar_root" name="Traccar"/>
+    <menuitem id="menu_traccar_devices"
+              name="Devices"
+              parent="menu_traccar_root"
+              action="view_traccar_device_tree"/>
+</odoo>
