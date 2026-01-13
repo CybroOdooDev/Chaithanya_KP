@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="view_traccar_device_tree" model="ir.ui.view">
         <field name="name">traccar.device.tree</field>
         <field name="model">traccar.device</field>
@@ -34,9 +36,17 @@
         </field>
     </record>
 
-    <menuitem id="menu_traccar_root" name="Traccar"/>
-    <menuitem id="menu_traccar_devices"
-              name="Devices"
-              parent="menu_traccar_root"
-              action="view_traccar_device_tree"/>
+    <record id="action_traccar_device" model="ir.actions.act_window">
+        <field name="name">Traccar</field>
+        <field name="res_model">traccar.device</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- MENU UNDER Fleet → Configuration -->
+<!--    <menuitem-->
+<!--        id="menu_traccar_devices"-->
+<!--        name="Traccar"-->
+<!--        parent="fleet.menu_fleet_configuration"-->
+<!--        action="action_traccar_device"-->
+<!--        sequence="60"/>-->
 </odoo>

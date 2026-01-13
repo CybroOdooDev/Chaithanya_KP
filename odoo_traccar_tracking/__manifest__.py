@@ -14,8 +14,9 @@
     'depends': ['base', 'mail','fleet'],
     'data': [
         'security/ir.model.access.csv',
-        # 'views/odoo_traccar_tracking_views.xml',
-        "views/odoo_traccar_tracking_views.xml"
+        "views/odoo_traccar_tracking_views.xml",
+        "views/traccar_device.xml",
+        "views/res_config_settings.xml"
     ],
     'license': 'LGPL-3',
     'installable': True,

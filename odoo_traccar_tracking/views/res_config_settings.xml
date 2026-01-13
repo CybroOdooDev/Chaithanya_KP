@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_traccar" model="ir.ui.view">
+            <field name="name">res.config.settings.traccar</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="priority" eval="95"/>
+            <field name="arch" type="xml">
+
+                <!-- ✅ ADD INSIDE FLEET APP -->
+                <xpath expr="//app[@name='fleet']" position="inside">
+
+                    <block title="Traccar Tracking" id="traccar_tracking_settings">
+
+                        <setting string="Traccar Server URL">
+                            <field name="traccar_url"/>
+                        </setting>
+
+                        <setting string="Traccar Username">
+                            <field name="traccar_username"/>
+                        </setting>
+
+                        <setting string="Traccar Password">
+                            <field name="traccar_password" password="True"/>
+                        </setting>
+
+                    </block>
+
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

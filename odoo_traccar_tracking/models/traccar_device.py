@@ -1,35 +1,32 @@
-# *- coding: utf-8 -*-
-
-from odoo import models, fields
 import requests
+from odoo import models, fields
 
 class TraccarDevice(models.Model):
     _name = "traccar.device"
     _description = "Traccar Device"
 
     name = fields.Char(required=True)
-    traccar_id = fields.Integer(required=True, index=True)
-    unique_id = fields.Char()
-    vehicle_id = fields.Many2one("fleet.vehicle")
+    traccar_id = fields.Integer(string="Traccar ID")
+    unique_id = fields.Char(string="Unique Identifier")
+    vehicle_id = fields.Many2one("fleet.vehicle", string="Fleet Vehicle")
 
     def action_sync_devices(self):
-        params = self.env["ir.config_parameter"].sudo()
-        url = params.get_param("traccar.url")
-        token = params.get_param("traccar.token")
+        param = self.env["ir.config_parameter"].sudo()
+        url = param.get_param("traccar.url")
+        user = param.get_param("traccar.username")
+        pwd = param.get_param("traccar.password")
 
         response = requests.get(
             f"{url}/api/devices",
-            headers={"Authorization": f"Bearer {token}"}
+            auth=(user, pwd),
+            timeout=15
         )
+        response.raise_for_status()
 
-        for dev in response.json():
-            device = self.search([("traccar_id", "=", dev["id"])], limit=1)
-            values = {
-                "name": dev["name"],
-                "traccar_id": dev["id"],
-                "unique_id": dev.get("uniqueId"),
-            }
-            if device:
-                device.write(values)
-            else:
-                self.create(values)
+        for device in response.json():
+            self.search([("traccar_id", "=", device["id"])], limit=1).unlink()
+            self.create({
+                "name": device["name"],
+                "traccar_id": device["id"],
+                "unique_id": device["uniqueId"],
+            })

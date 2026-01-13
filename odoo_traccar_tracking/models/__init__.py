@@ -5,3 +5,4 @@ from . import res_config_settings
 from . import traccar_device
 from . import traccar_position
 from . import fleet_vehicle
+from . import traccar_config
