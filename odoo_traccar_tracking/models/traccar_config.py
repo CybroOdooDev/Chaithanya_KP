@@ -4,6 +4,9 @@ import requests
 import json
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from logging import getLogger
+
+_logger = getLogger(__name__)
 
 
 class TraccarConfig(models.Model):

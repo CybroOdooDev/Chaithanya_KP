@@ -34,3 +34,5 @@ class OdooTraccarTracking(models.Model):
     def unlink(self):
         """Delete records"""
         return super().unlink()
+
+

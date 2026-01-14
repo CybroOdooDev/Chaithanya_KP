@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Action for Traccar Devices -->
+    <record id="action_traccar_devices" model="ir.actions.act_window">
+        <field name="name">Traccar Devices</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name="view_mode">tree,form,map</field>
+    </record>
+
+    <!-- Menu 1: Traccar Devices -->
+    <menuitem
+        id="menu_traccar_devices"
+        name="Traccar Devices"
+        parent="fleet.menu_fleet_vehicles"
+        action="action_traccar_devices"
+        sequence="30"/>
+
+    <!-- Action for Live Tracking -->
+    <record id="action_traccar_live_tracking" model="ir.actions.act_window">
+        <field name="name">Live Tracking</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name="view_mode">map,tree,form</field>
+    </record>
+
+    <!-- Menu 2: Live Tracking -->
+    <menuitem
+        id="menu_traccar_live_tracking"
+        name="Live Tracking"
+        parent="fleet.menu_fleet_vehicles"
+        action="action_traccar_live_tracking"
+        sequence="31"/>
+
+    <!-- Action for Tracking Logs -->
+    <record id="action_traccar_logs" model="ir.actions.act_window">
+        <field name="name">Tracking Logs</field>
+        <field name="res_model">fleet.vehicle.log.services"
+        </field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu 3: Tracking Logs -->
+    <menuitem
+        id="menu_traccar_logs"
+        name="Tracking Logs"
+        parent="fleet.menu_fleet_vehicles"
+        action="action_traccar_logs"
+        sequence="32"/>
+
+</odoo>
