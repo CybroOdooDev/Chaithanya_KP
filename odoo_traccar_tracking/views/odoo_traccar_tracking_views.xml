@@ -85,7 +85,7 @@
     <menuitem name="Odoo Traccar Tracking"
               id="odoo_traccar_tracking_menu_root"/>
 
-    <menuitem name="Samples"
+    <menuitem name="Traccar"
               id="odoo_traccar_tracking_menu"
               parent="odoo_traccar_tracking_menu_root"
               action="odoo_traccar_tracking_action"/>

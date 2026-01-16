@@ -46,3 +46,4 @@ class FleetVehicle(models.Model):
                         'last_gps_time': pos.get('fixTime'),
                     })
                     break
+

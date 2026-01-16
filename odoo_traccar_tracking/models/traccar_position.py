@@ -20,6 +20,7 @@ class TraccarPosition(models.Model):
         token = params.get_param("traccar.token")
 
         response = requests.get(
+
             f"{url}/api/positions",
             headers={"Authorization": f"Bearer {token}"}
         )

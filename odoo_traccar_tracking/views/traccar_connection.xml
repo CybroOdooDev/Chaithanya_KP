@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record id="view_traccar_connection_list" model="ir.ui.view">
+            <field name="name">traccar.connection.list</field>
+            <field name="model">traccar.connection</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="server_url"/>
+                    <field name="username"/>
+                    <field name="is_active"/>
+                    <field name="last_sync"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_traccar_connection_form" model="ir.ui.view">
+            <field name="name">traccar.connection.form</field>
+            <field name="model">traccar.connection</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="test_connection" type="object"
+                            string="Test Connection" class="oe_highlight"/>
+                        <button name="sync_devices" type="object"
+                            string="Sync Devices" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="server_url" placeholder="https://traccar.example.com:8082"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="username" placeholder="admin"/>
+                                <field name="password" password="True"/>
+                                <field name="google_maps_api" placeholder="Your Google Maps API Key"/>
+                            </group>
+                            <group>
+                                <field name="is_active"/>
+                                <field name="sync_frequency"/>
+                                <field name="last_sync" readonly="True"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Information">
+                                <group>
+                                    <p><strong>Setup Instructions:</strong></p>
+                                    <ol>
+                                        <li>Enter your Traccar server URL</li>
+                                        <li>Enter admin username and password</li>
+                                        <li>Add Google Maps API Key</li>
+                                        <li>Click "Test Connection" to verify</li>
+                                        <li>Click "Sync Devices" to import devices</li>
+                                    </ol>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -16,7 +16,8 @@
         'security/ir.model.access.csv',
         "views/odoo_traccar_tracking_views.xml",
         "views/traccar_device.xml",
-        "views/res_config_settings.xml"
+        "views/res_config_settings.xml",
+        "views/traccar_connection.xml"
     ],
     'license': 'LGPL-3',
     'installable': True,

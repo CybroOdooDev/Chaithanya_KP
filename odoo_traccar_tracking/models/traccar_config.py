@@ -19,6 +19,7 @@ class TraccarConfig(models.Model):
     password = fields.Char('Password', required=True)
     is_active = fields.Boolean('Active', default=True)
 
+
     def test_connection(self):
         """Test connection to Traccar server"""
         try:

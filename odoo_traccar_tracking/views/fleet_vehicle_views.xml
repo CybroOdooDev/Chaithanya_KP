@@ -5,7 +5,7 @@
     <record id="action_traccar_devices" model="ir.actions.act_window">
         <field name="name">Traccar Devices</field>
         <field name="res_model">fleet.vehicle</field>
-        <field name="view_mode">tree,form,map</field>
+        <field name="view_mode">list,form,map</field>
     </record>
 
     <!-- Menu 1: Traccar Devices -->
@@ -20,7 +20,7 @@
     <record id="action_traccar_live_tracking" model="ir.actions.act_window">
         <field name="name">Live Tracking</field>
         <field name="res_model">fleet.vehicle</field>
-        <field name="view_mode">map,tree,form</field>
+        <field name="view_mode">map,list,form</field>
     </record>
 
     <!-- Menu 2: Live Tracking -->
@@ -36,7 +36,7 @@
         <field name="name">Tracking Logs</field>
         <field name="res_model">fleet.vehicle.log.services"
         </field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Menu 3: Tracking Logs -->
