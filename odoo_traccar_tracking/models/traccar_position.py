@@ -37,3 +37,4 @@ class TraccarPosition(models.Model):
                     "speed": pos["speed"],
                     "device_time": pos["deviceTime"],
                 })
+

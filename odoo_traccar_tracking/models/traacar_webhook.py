@@ -42,3 +42,4 @@ class TraccarWebhook(http.Controller):
             })
 
         return {'status': 'success'}
+

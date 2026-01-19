@@ -19,6 +19,7 @@
         "views/res_config_settings.xml",
         "views/traccar_connection.xml"
     ],
+
     'license': 'LGPL-3',
     'installable': True,
     'application': False,

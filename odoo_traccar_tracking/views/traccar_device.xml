@@ -43,10 +43,10 @@
     </record>
 
     <!-- MENU UNDER Fleet → Configuration -->
-    <menuitem
-        id="menu_traccar_devices"
-        name="Traccar"
-        parent="fleet.menu_fleet_configuration"
-        action="action_traccar_device"
-        sequence="60"/>
+<!--    <menuitem-->
+<!--        id="menu_traccar_devices"-->
+<!--        name="Traccar"-->
+<!--        parent="fleet.menu_fleet_configuration"-->
+<!--        action="action_traccar_device"-->
+<!--        sequence="60"/>-->
 </odoo>
