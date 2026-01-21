@@ -43,6 +43,7 @@
         </field>
     </record>
 
+
     <!-- Kanban View -->
     <record id="odoo_traccar_tracking_view_kanban" model="ir.ui.view">
         <field name="name">odoo.traccar.tracking.view.kanban</field>
@@ -60,6 +61,7 @@
             </kanban>
         </field>
     </record>
+
 
     <!-- Search View -->
     <record id="odoo_traccar_tracking_view_search" model="ir.ui.view">

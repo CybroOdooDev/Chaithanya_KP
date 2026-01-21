@@ -157,3 +157,4 @@ class TraccarLocationSync(models.Model):
                     'altitude': pos.get('altitude'),
                     'timestamp': pos.get('serverTime'),
                 })
+

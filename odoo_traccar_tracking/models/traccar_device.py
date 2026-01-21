@@ -10,6 +10,7 @@ class TraccarDevice(models.Model):
     unique_id = fields.Char(string="Unique Identifier")
     vehicle_id = fields.Many2one("fleet.vehicle", string="Fleet Vehicle")
 
+
     def action_sync_devices(self):
         param = self.env["ir.config_parameter"].sudo()
         url = param.get_param("traccar.url")

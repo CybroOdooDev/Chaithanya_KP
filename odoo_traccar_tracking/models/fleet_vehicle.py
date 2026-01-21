@@ -47,3 +47,4 @@ class FleetVehicle(models.Model):
                     })
                     break
 
+

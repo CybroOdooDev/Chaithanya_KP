@@ -94,6 +94,7 @@
 
             result = []
 
+
             # Process each location
             for loc in locations:
                 location_dict = {

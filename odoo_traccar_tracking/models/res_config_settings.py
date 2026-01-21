@@ -1,108 +1,143 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+import requests
+
 
 class ResConfigSettings(models.TransientModel):
-    _inherit = "res.config.settings"
+    _inherit = 'res.config.settings'
 
-    traccar_url = fields.Char(
-        string="Traccar Server URL",
-        help="e.g., http://192.168.1.100:8082 or https://traccar.example.com"
+    google_maps_api_key = fields.Char(
+        string='Google Maps API Key',
+        help='API key from Google Cloud Console with Maps JavaScript API enabled'
     )
-    traccar_username = fields.Char(
-        string="Traccar Username",
-        help="Username for Traccar API authentication"
+    google_geocoding_api_key = fields.Char(
+        string='Google Geocoding API Key',
+        help='API key for reverse geocoding (can be same as above)'
     )
-    traccar_password = fields.Char(
-        string="Traccar Password",
-        help="Password for Traccar API authentication"
+    location_update_interval = fields.Integer(
+        string='Location Update Interval (seconds)',
+        default=30,
+        help='Frequency of GPS location updates'
     )
-    traccar_connection_status = fields.Char(
-        string="Connection Status",
+    track_vehicle_speed = fields.Boolean(
+        string='Track Vehicle Speed',
+        default=True,
+        help='Enable speed monitoring and alerts'
+    )
+    speed_limit_alert = fields.Float(
+        string='Speed Limit Alert Threshold (km/h)',
+        default=80.0,
+        help='Alert when vehicle exceeds this speed'
+    )
+    enable_geofencing = fields.Boolean(
+        string='Enable Geofencing',
+        default=True,
+        help='Monitor vehicle entry/exit from defined areas'
+    )
+    enable_trip_tracking = fields.Boolean(
+        string='Enable Trip Tracking',
+        default=True,
+        help='Track vehicle trips and duration'
+    )
+    idle_time_threshold = fields.Integer(
+        string='Idle Time Threshold (minutes)',
+        default=5,
+        help='Minutes before vehicle is considered idle'
+    )
+    maps_zoom_level = fields.Integer(
+        string='Maps Default Zoom Level',
+        default=15,
+        help='Default zoom level for map displays'
+    )
+    show_location_history = fields.Boolean(
+        string='Show Location History on Map',
+        default=True,
+        help='Display vehicle route history'
+    )
+    api_connection_status = fields.Char(
+        string='API Connection Status',
         readonly=True,
-        compute="_compute_connection_status"
-    )
-    traccar_auto_sync = fields.Boolean(
-        string="Enable Auto Sync",
-        default=False,
-        help="Automatically sync locations every 5 minutes"
+        compute='_compute_api_status'
     )
 
-    @api.depends('traccar_url', 'traccar_username', 'traccar_password')
-    def _compute_connection_status(self):
-        """Check if Traccar server is accessible"""
+    @api.depends('google_maps_api_key')
+    def _compute_api_status(self):
+        """Verify Google Maps API key validity"""
         for record in self:
-            if not record.traccar_url:
-                record.traccar_connection_status = "Not Configured"
+            if not record.google_maps_api_key:
+                record.api_connection_status = "Not Configured"
                 continue
 
             try:
-                from .traccar_api import TraccarAPI
-                api = TraccarAPI(
-                    record.traccar_url,
-                    record.traccar_username,
-                    record.traccar_password
-                )
-                if api.test_connection():
-                    record.traccar_connection_status = "✓ Connected"
+                from .google_maps_api import GoogleMapsAPI
+                api = GoogleMapsAPI(record.google_maps_api_key)
+                if api.verify_api_key():
+                    record.api_connection_status = "✓ Valid & Connected"
                 else:
-                    record.traccar_connection_status = "✗ Connection Failed"
+                    record.api_connection_status = "✗ Invalid API Key"
             except Exception as e:
-                record.traccar_connection_status = f"✗ Error: {str(e)}"
+                record.api_connection_status = f"✗ Error: {str(e)[:50]}"
 
     def set_values(self):
-        """Save Traccar configuration"""
+        """Save configuration"""
         super().set_values()
 
-        # Validate URL
-        if self.traccar_url and not self.traccar_url.startswith(('http://', 'https://')):
-            raise ValidationError("Traccar URL must start with http:// or https://")
+        if self.google_maps_api_key and len(self.google_maps_api_key) < 20:
+            raise ValidationError("Invalid Google Maps API key format")
 
-        param = self.env["ir.config_parameter"].sudo()
-        param.set_param("traccar.url", self.traccar_url or "")
-        param.set_param("traccar.username", self.traccar_username or "")
-        param.set_param("traccar.password", self.traccar_password or "")
-        param.set_param("traccar.auto_sync", self.traccar_auto_sync)
+        param = self.env['ir.config_parameter'].sudo()
+        param.set_param('fleet_geolocation.google_maps_api_key', self.google_maps_api_key or '')
+        param.set_param('fleet_geolocation.google_geocoding_api_key', self.google_geocoding_api_key or '')
+        param.set_param('fleet_geolocation.location_update_interval', self.location_update_interval)
+        param.set_param('fleet_geolocation.track_vehicle_speed', self.track_vehicle_speed)
+        param.set_param('fleet_geolocation.speed_limit_alert', self.speed_limit_alert)
+        param.set_param('fleet_geolocation.enable_geofencing', self.enable_geofencing)
+        param.set_param('fleet_geolocation.enable_trip_tracking', self.enable_trip_tracking)
+        param.set_param('fleet_geolocation.idle_time_threshold', self.idle_time_threshold)
+        param.set_param('fleet_geolocation.maps_zoom_level', self.maps_zoom_level)
+        param.set_param('fleet_geolocation.show_location_history', self.show_location_history)
 
     def get_values(self):
-        """Retrieve Traccar configuration"""
+        """Retrieve configuration"""
         res = super().get_values()
-        param = self.env["ir.config_parameter"].sudo()
+        param = self.env['ir.config_parameter'].sudo()
 
         res.update({
-            'traccar_url': param.get_param("traccar.url", ""),
-            'traccar_username': param.get_param("traccar.username", ""),
-            'traccar_password': param.get_param("traccar.password", ""),
-            'traccar_auto_sync': param.get_param("traccar.auto_sync", False),
+            'google_maps_api_key': param.get_param('fleet_geolocation.google_maps_api_key', ''),
+            'google_geocoding_api_key': param.get_param('fleet_geolocation.google_geocoding_api_key', ''),
+            'location_update_interval': int(param.get_param('fleet_geolocation.location_update_interval', 30)),
+            'track_vehicle_speed': param.get_param('fleet_geolocation.track_vehicle_speed', True),
+            'speed_limit_alert': float(param.get_param('fleet_geolocation.speed_limit_alert', 80.0)),
+            'enable_geofencing': param.get_param('fleet_geolocation.enable_geofencing', True),
+            'enable_trip_tracking': param.get_param('fleet_geolocation.enable_trip_tracking', True),
+            'idle_time_threshold': int(param.get_param('fleet_geolocation.idle_time_threshold', 5)),
+            'maps_zoom_level': int(param.get_param('fleet_geolocation.maps_zoom_level', 15)),
+            'show_location_history': param.get_param('fleet_geolocation.show_location_history', True),
         })
         return res
 
-    def action_test_connection(self):
-        """Test Traccar server connection"""
+    def action_test_api_connection(self):
+        """Test Google Maps API connection"""
         self.ensure_one()
 
-        if not self.traccar_url or not self.traccar_username or not self.traccar_password:
-            raise ValidationError("Please fill in Traccar URL, Username, and Password")
+        if not self.google_maps_api_key:
+            raise ValidationError("Please enter Google Maps API Key")
 
         try:
-            from .traccar_api import TraccarAPI
-            api = TraccarAPI(
-                self.traccar_url,
-                self.traccar_username,
-                self.traccar_password
-            )
+            from .google_maps_api import GoogleMapsAPI
+            api = GoogleMapsAPI(self.google_maps_api_key)
 
-            if api.test_connection():
+            if api.verify_api_key():
                 return {
                     'type': 'ir.actions.client',
                     'tag': 'display_notification',
                     'params': {
                         'title': 'Success',
-                        'message': 'Connected to Traccar server successfully!',
+                        'message': 'Google Maps API connection verified successfully!',
                         'type': 'success',
                     }
                 }
             else:
-                raise ValidationError("Failed to connect to Traccar server")
+                raise ValidationError("Invalid Google Maps API key")
         except Exception as e:
-            raise ValidationError(f"Connection Error: {str(e)}")
-
+            raise ValidationError(f"API Connection Error: {str(e)}")
