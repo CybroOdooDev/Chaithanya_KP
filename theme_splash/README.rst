@@ -22,7 +22,8 @@ General Public License, Version 3 (LGPL v3).
 
 Credits
 -------
-* Developers: (V18) Adarsh K,
+* Developers: (V19) Chaithanya KP,
+              (V18) Adarsh K,
               (V17) Sruthi M,
 * Contact: odoo@cybrosys.com
 
